@@ -1,4 +1,4 @@
-# 📌 AS503TSN1 - Desenvolvimento Web Back-End
+# 📌 AS503TSN1 - Desenvolvimento Web Back-End e SPAS504TSN1 - Arquitetura e Aplicações WEB
 Bem-vindo(a) ao repositório da disciplina AS503TSN1 - Desenvolvimento Web Back-End! Aqui você encontrará materiais, códigos-fonte e instruções para acompanhar o curso de desenvolvimento back-end com Java Spring Boot.
 
 ## 📚 Ementa da Disciplina
