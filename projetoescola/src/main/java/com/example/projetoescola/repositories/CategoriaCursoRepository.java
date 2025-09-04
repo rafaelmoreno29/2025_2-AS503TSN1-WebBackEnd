@@ -28,4 +28,23 @@ public class CategoriaCursoRepository {
         return entityManager.createQuery(
                 jpql, CategoriaCurso.class).getResultList();
     }
+
+    public List<CategoriaCurso> obterPorNome(String nome) {
+        String jpql = "SELECT c FROM CategoriaCurso c WHERE c.nome LIKE :nome";
+        return entityManager.createQuery(jpql, CategoriaCurso.class)
+                .setParameter("nome", "%" + nome + "%")
+                .getResultList();
+    }
+
+    @Transactional
+    public void excluir(int id) {
+        CategoriaCurso categoriaCurso = entityManager.find(CategoriaCurso.class, id);
+        excluir(categoriaCurso);
+    }
+
+    @Transactional
+    public void excluir(CategoriaCurso categoriaCurso) {
+        entityManager.remove(categoriaCurso);
+    }
+
 }
