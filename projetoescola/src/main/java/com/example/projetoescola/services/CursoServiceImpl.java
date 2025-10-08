@@ -2,6 +2,8 @@ package com.example.projetoescola.services;
 
 import org.springframework.stereotype.Service;
 
+import com.example.projetoescola.dtos.CategoriaCursoDTO;
+import com.example.projetoescola.dtos.CursoDTO;
 import com.example.projetoescola.dtos.CursoRequestDTO;
 import com.example.projetoescola.dtos.RegraNegocioException;
 import com.example.projetoescola.models.CategoriaCurso;
@@ -33,5 +35,24 @@ public class CursoServiceImpl implements CursoService {
         curso.setCargaHoraria(cursoRequestDTO.getCargaHoraria());
         curso.setCategoriaCurso(categ);
         cursoRepository.save(curso);
+    }
+
+    @Override
+    public CursoDTO obterPorId(Long id) {
+        return cursoRepository.findById(id)
+                .map((Curso c) -> {
+                    return CursoDTO.builder()
+                            .id(c.getId())
+                            .nome(c.getNome())
+                            .cargaHoraria(c.getCargaHoraria())
+                            .categoria(
+                                    CategoriaCursoDTO.builder()
+                                            .id(c.getCategoriaCurso().getId())
+                                            .nome(c.getCategoriaCurso().getNome())
+                                            .build())
+                            .build();
+                })
+                .orElseThrow(
+                        () -> new RegraNegocioException("Curso não encontrado."));
     }
 }
