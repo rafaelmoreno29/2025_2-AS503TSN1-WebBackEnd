@@ -9,6 +9,8 @@ import com.example.projetoescola.dtos.CursoDTO;
 import com.example.projetoescola.dtos.CursoRequestDTO;
 import com.example.projetoescola.services.CursoService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +29,7 @@ public class CursoController {
     }
 
     @PostMapping
-    public void criarCurso(@RequestBody CursoRequestDTO cursoRequestDTO) {
+    public void criarCurso(@Valid @RequestBody CursoRequestDTO cursoRequestDTO) {
         cursoService.salvar(cursoRequestDTO);
     }
 
@@ -42,7 +44,7 @@ public class CursoController {
     }
 
     @PutMapping("/{id}")
-    public void editarCurso(@PathVariable Long id,
+    public void editarCurso(@Valid @PathVariable Long id,
             @RequestBody CursoRequestDTO cursoRequestDTO) {
         cursoService.editar(id, cursoRequestDTO);
     }

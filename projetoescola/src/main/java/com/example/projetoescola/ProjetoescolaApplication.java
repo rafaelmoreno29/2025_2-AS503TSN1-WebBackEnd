@@ -26,9 +26,9 @@ public class ProjetoescolaApplication {
 					new CategoriaCurso(null, "Tecnólogo", null));
 			// Inserir cursos
 			cursoRepository.save(
-					new Curso(null, "Análise de Sistemas", 2000, null));
+					new Curso(null, "Curso01", 2000, null));
 			cursoRepository.save(
-					new Curso(null, "Jogos Digitais", 2050, null));
+					new Curso(null, "Curso02", 2050, null));
 			List<Curso> listaCursos = cursoRepository.findAll();
 			listaCursos.forEach(System.out::println);
 			// Associar cursos à categoria
