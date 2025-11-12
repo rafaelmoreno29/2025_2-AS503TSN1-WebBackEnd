@@ -20,22 +20,13 @@ import com.example.projetoescola.services.UsuarioService;
 @RequestMapping("/api/auth")
 public class AuthController {
     private UsuarioService usuarioService;
-    private JwtService jwtService;
 
-    public AuthController(UsuarioService usuarioService, JwtService jwtService) {
+    public AuthController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        this.jwtService = jwtService;
     }
 
     @PostMapping()
     public TokenDTO autenticar(@RequestBody AutenticacaoDTO autenticacao) {
-        try {
-            Usuario usuario = new Usuario(0, "", autenticacao.getEmail(), autenticacao.getSenha(), "");
-            UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
-            String token = jwtService.gerarToken(usuario);
-            return new TokenDTO(usuario.getEmail(), token);
-        } catch (UsernameNotFoundException | RegraNegocioException ex) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ex.getMessage());
-        }
+        return usuarioService.autenticar(autenticacao);
     }
 }

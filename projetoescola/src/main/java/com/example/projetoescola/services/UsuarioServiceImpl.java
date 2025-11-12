@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.projetoescola.configs.JwtService;
+import com.example.projetoescola.dtos.AutenticacaoDTO;
 import com.example.projetoescola.dtos.RegraNegocioException;
+import com.example.projetoescola.dtos.TokenDTO;
 import com.example.projetoescola.dtos.UsuarioDTO;
 import com.example.projetoescola.models.Usuario;
 import com.example.projetoescola.repositories.UsuarioRepository;
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     @Transactional
@@ -75,11 +79,23 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     }
 
     @Override
-    public UserDetails autenticar(Usuario usuario) {
+    public UserDetails autenticarTeste(Usuario usuario) {
         UserDetails user = loadUserByUsername(usuario.getEmail());
         boolean senhaOK = passwordEncoder.matches(usuario.getSenha(), user.getPassword());
         if (senhaOK) {
             return user;
+        }
+        throw new RegraNegocioException("Senha inválida");
+    }
+
+    @Override
+    public TokenDTO autenticar(AutenticacaoDTO autenticacao) {
+        UserDetails user = loadUserByUsername(autenticacao.getEmail());
+        boolean senhaOK = passwordEncoder.matches(autenticacao.getSenha(), user.getPassword());
+        if (senhaOK) {
+            Usuario usuario = new Usuario(0, "", autenticacao.getEmail(), autenticacao.getSenha(), "");
+            String token = jwtService.gerarToken(usuario);
+            return new TokenDTO(autenticacao.getEmail(), token);
         }
         throw new RegraNegocioException("Senha inválida");
     }
